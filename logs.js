@@ -1,19 +1,14 @@
+const fs = require("fs");
+
 const minute = 1000 * 60; // 1 minute
 const fileName = "start";
-const start = process.memoryUsage().rss / 1e6 + "Mb;" + "\r\n";
 let tick = 0;
 
-fs.writeFile(`${fileName}.txt`, start, (err) => {
-  if (err) {
-    console.error(err);
-  }
-  // file written successfully
-});
-
-setInterval(() => {
-  fs.appendFile(
-    `${fileName}.text`,
-    `
+module.exports.run = function () {
+  setInterval(() => {
+    fs.appendFile(
+      `${fileName}.txt`,
+      `
     rss: ${process.memoryUsage().heapUsed / 1e6}Mb;
     heapTotal: ${process.memoryUsage().heapTotal / 1e6}Mb;
     heapUsed: ${process.memoryUsage().heapUsed / 1e6}Mb;
@@ -21,20 +16,20 @@ setInterval(() => {
     arrayBuffers: ${process.memoryUsage().arrayBuffers / 1e6}Mb;
     `,
 
-    function (err) {
-      if (err) throw err;
-      console.log("Saved!");
-    }
-  );
-}, timer / 2);
+      function (err) {
+        if (err) throw err;
+      }
+    );
+  }, minute / 2);
 
-setInterval(() => {
-  fs.appendFile(
-    `${fileName}.text`,
-    `[${(tick += 1)} minutes] `,
-    function (err) {
-      if (err) throw err;
-      console.log("Saved!");
-    }
-  );
-}, timer);
+  setInterval(() => {
+    fs.appendFile(
+      `${fileName}.txt`,
+      `[${(tick += 1)} minutes] `,
+      function (err) {
+        if (err) throw err;
+        console.log(`[${(tick += 1)} minutes] `);
+      }
+    );
+  }, minute);
+};

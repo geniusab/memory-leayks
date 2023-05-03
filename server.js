@@ -1,6 +1,7 @@
 const http = require("http");
-const fs = require("fs");
-require("dotenv").config();
+const logger = require("./logs.js");
+
+logger.run();
 
 const requestListener = require("./routes");
 
@@ -10,6 +11,6 @@ server.on("error", (err) => {
   console.error(`Server error: ${err.message}`);
 });
 
-server.listen(process.env.PORT, () => {
-  console.log(`Server started on port ${process.env.PORT}`);
+server.listen(3000, () => {
+  console.log(`Server started on port ${3000}`);
 });
